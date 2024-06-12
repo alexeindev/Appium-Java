@@ -1,4 +1,5 @@
 import com.google.common.collect.ImmutableMap;
+import io.appium.java_client.AppiumBy;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
@@ -37,6 +38,9 @@ public class BaseTest {
                 "elementId", ((RemoteWebElement) element).getId(),
                 "duration", duration
         ));
+    }
+    public void scrollIntoText(String elementText) {
+        driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable (new UiSelector()).scrollIntoView(text(\"\"))"));
     }
 
     @AfterClass
