@@ -14,6 +14,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BaseTest {
 
@@ -27,7 +29,7 @@ public class BaseTest {
         service.start();
         //Starting android driver and capabilities
         UiAutomator2Options options = new UiAutomator2Options();
-        options.setDeviceName("Pixel 8 Pro API 34");
+        options.setDeviceName("Pixel 6 Pro API 33");
         options.setApp("C:\\Users\\aleji\\IdeaProjects\\AppiumBasics\\src\\test\\Utils\\ApiDemos-debug.apk");
         driver = new AndroidDriver(new URL("http://127.0.0.1:4723"), options);
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
@@ -38,6 +40,14 @@ public class BaseTest {
                 "elementId", ((RemoteWebElement) element).getId(),
                 "duration", duration
         ));
+    }
+    public void swipeGesture(WebElement element, String direction) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        Map<String, Object> params = new HashMap<>();
+        params.put("elementId", ((RemoteWebElement)element).getId());
+        params.put("direction", direction);
+        params.put("percent", "1.0");
+        js.executeScript("mobile: swipeGesture", params);
     }
     public void scrollIntoText(String elementText) {
         driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable (new UiSelector()).scrollIntoView(text(\"\"))"));
