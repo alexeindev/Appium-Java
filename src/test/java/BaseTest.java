@@ -4,7 +4,9 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.testng.annotations.AfterClass;
@@ -48,6 +50,21 @@ public class BaseTest {
         params.put("direction", direction);
         params.put("percent", "1.0");
         js.executeScript("mobile: swipeGesture", params);
+    }
+
+    public static Point getCenterOfElement(WebElement element) {
+        Point elementLocation = element.getLocation();
+        Dimension elementSize = element.getSize();
+        return new Point(elementLocation.x + elementSize.width/2, elementLocation.y + elementSize.height/2);
+    }
+    public void dragAndDropGesture(WebElement sourceElement, WebElement targetElement) {
+        Point centerOfTarget = getCenterOfElement(targetElement);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        Map<String, Object> params = new HashMap<>();
+        params.put("elementId", ((RemoteWebElement)sourceElement).getId());
+        params.put("endX", centerOfTarget.x);
+        params.put("endY", centerOfTarget.y);
+        js.executeScript("mobile: dragGesture", params);
     }
     public void scrollIntoText(String elementText) {
         driver.findElement(AppiumBy.androidUIAutomator("new UiScrollable (new UiSelector()).scrollIntoView(text(\"\"))"));
